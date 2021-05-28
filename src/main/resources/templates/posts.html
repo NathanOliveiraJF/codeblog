@@ -1,51 +1,64 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
-  <head>
-    <meta charset="UTF-8"/>
-    <title>Code Blog</title>
 
-    <!-- CSS BOOTSTRAP-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <title>Code Blog</title>
 
-  <body>
+  <!-- CSS BOOTSTRAP-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <header>
-      <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-          <span class="navbar-brand mb-0 h1 fw-bold">Code blog</span>
-          <a href="/newpost" class="btn btn-primary" role="button">Novo Post</a>
-        </div>
-      </nav>
-    </header>
+  <!-- Import Goodle Icon Font -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 
-    <section>
-      <div class="container" style="width: 60%;padding-bottom: 30px;" >
-        
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-white pl-0">
-            <li class="breadcrumb-item active" aria-current="page">Posts</li>
-          </ol>
-        </nav>
+<body>
 
-        <div class="card shadow-sm bg-white rounded" style="margin-top: 20px;" th:each="post : ${posts}">
-          <div class="card-body">
-           
-            <p class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">
-              <span th:text="${post.autor}"></span>
-              <span th:text="${post.date}"></span>
-            </p>
-
-            <a th:href="${(#mvc.url('CC#getPostDetails').arg(0, post.id)).build()}"><h4 class="card-title" style="font-weight: bold; color: black; padding-top: 5px;"><span th:text="${post.titulo}"></span></h4></a>
-
-            <p class="card-text"><span th:utext="${#strings.abbreviate(post.texto, 400)}"></span></p>
-
-          </div>
-        </div>
-
+  <header>
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1 fw-bold">Code blog</span>
+        <a href="/newpost" class="btn btn-outline-dark" role="button">Novo Post</a>
       </div>
-    </section>
+    </nav>
+  </header>
 
-  </body>
+  <section>
+    <div class="container" style="width: 60%;padding-bottom: 30px;">
+
+      <th:block th:include="validateMessage"></th:block>
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white pl-0">
+          <li class="breadcrumb-item active" aria-current="page">Posts</li>
+        </ol>
+      </nav>
+
+      <div class="card shadow-sm bg-white rounded" style="margin-top: 20px;" th:each="post : ${posts}">
+        <div class="card-body">
+          <p class="card-subtitle mb-2 text-muted" style="font-size: 0.8rem;">
+            <span th:text="${post.autor}"></span>
+            <span th:text="${post.date}"></span>
+          </p>
+          <a th:href="${(#mvc.url('CC#getPostDetails').arg(0, post.id)).build()}">
+            <h4 class="card-title" style="font-weight: bold; color: black; padding-top: 5px;">
+              <span th:text="${post.titulo}"></span>
+            </h4>
+          </a>
+          <p class="card-text"><span th:utext="${#strings.abbreviate(post.texto, 400)}"></span></p>
+          <a th:href="${(#mvc.url('CC#getEditPost').arg(0, post.id)).build()}"><span class="material-icons text-dark"
+              style="width: 25px;">edit_outlined</span></a>
+          <a th:href="${(#mvc.url('CC#deletePost').arg(0, post.id)).build()}"><span
+              class="material-icons text-dark">delete_outlined</span></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+
 </html>
+
+<!--  <a href="#"><i class="material-icons">edit_outlined</i></a> -->

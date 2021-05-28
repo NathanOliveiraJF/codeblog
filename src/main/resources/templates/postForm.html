@@ -41,7 +41,8 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-white pl-0">
           <li class="breadcrumb-item" aria-current="page"><a href="/posts">Posts</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Novo post</li>
+          <li class="breadcrumb-item active" aria-current="page" th:text="${title}?: 'Novo Post'">
+          </li>
         </ol>
       </nav>
 
@@ -50,18 +51,20 @@
 
         <form method="post">
           <div class="form-group">
-            <input type="text" class="form-control" name="titulo" placeholder="Título *" />
+            <input type="text" class="form-control" name="titulo" placeholder="Título *" th:value="${post?.titulo}" />
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" name="autor" placeholder="Autor *" />
+            <input type="text" class="form-control" name="autor" placeholder="Autor *" th:value="${post?.autor}" />
           </div>
 
-          <textarea type="text" class="form-control" name="texto" id="summernote" placeholder="Texto *"></textarea>
+          <textarea type="text" class="form-control" name="texto" id="summernote" placeholder="Texto *"
+            th:text="${post?.texto}"></textarea>
 
           <small class="form-text text-muted">(*) Campos obrigatórios</small>
 
           <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Publicar</button>
           <a href="/posts" class="btn btn-light" role="button" style="margin-top: 10px;">Cancelar</a>
+
         </form>
       </div>
     </div>

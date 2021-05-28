@@ -51,7 +51,7 @@ public class CodeblogController {
   // method for save posts
   @RequestMapping(value = "/newpost", method = RequestMethod.POST)
   public String savePost(@Valid Post post, BindingResult result, RedirectAttributes attributes) {
-    // if any fields blank or null
+    // se algum campo for null
     if (result.hasErrors()) {
       attributes.addFlashAttribute("message", "Verifique se os campos obrigatórios foram preenchidos!");
       return "redirect:/newpost";
@@ -61,4 +61,49 @@ public class CodeblogController {
     return "redirect:/posts";
   }
 
+  // delete post
+  @RequestMapping(value = "/posts/delete/{id}", method = RequestMethod.GET)
+  public String deletePost(@PathVariable("id") long id, RedirectAttributes attributes) {
+    Post post = codeblogService.findById(id);
+    attributes.addFlashAttribute("messageSuccess", "Post - " + post.getTitulo() + " removido com sucesso!");
+    codeblogService.delete(post);
+    return "redirect:/posts";
+  }
+
+  // update page
+  @RequestMapping(value = "/posts/edit/{id}", method = RequestMethod.GET)
+  public ModelAndView getEditPost(@PathVariable("id") long id) {
+    ModelAndView mv = new ModelAndView("postForm");
+    Post post = codeblogService.findById(id);
+    mv.addObject("post", post);
+    mv.addObject("title", "Editar post - " + post.getTitulo());
+    return mv;
+  }
+
+  // update
+  @RequestMapping(value = "/posts/edit/{id}", method = RequestMethod.POST)
+  public ModelAndView updatePost(@PathVariable("id") long id, @Valid Post postRequest, BindingResult result) {
+
+    ModelAndView mv = new ModelAndView("posts");
+    List<Post> posts = codeblogService.findAll();
+
+    if (result.hasErrors()) {
+
+      mv.addObject("posts", posts);
+      mv.addObject("message", "Verifique se os campos obrigatórios");
+
+      return mv;
+    }
+    Post post = codeblogService.findById(id);
+    post.setAutor(postRequest.getAutor());
+    post.setTexto(postRequest.getTexto());
+    post.setTitulo(postRequest.getTitulo());
+    post.setDate(LocalDate.now());
+    codeblogService.save(post);
+
+    posts = codeblogService.findAll();
+    mv.addObject("posts", posts);
+    mv.addObject("messageSuccess", "post atualizado!");
+    return mv;
+  }
 }
